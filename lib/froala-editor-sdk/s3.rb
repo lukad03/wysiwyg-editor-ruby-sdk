@@ -36,8 +36,8 @@ module FroalaEditorSDK
               {acl: options[:acl]},                         # ACL property
               {success_action_status: "201"},               # Response status 201 'file created'
               {"x-amz-algorithm": "AWS4-HMAC-SHA256"},
-              {"x-amz-credential": self.credential(options)},
-              {"x-amz-date": self.date_string}
+              {"x-amz-credential": credential(options)},
+              {"x-amz-date": date_string}
           ]
       }
     end
@@ -65,13 +65,13 @@ module FroalaEditorSDK
 
     private
 
-    def self.credential(options = nil)
+    def credential(options = nil)
       [
         options[:accessKey], date_string, options[:region], 's3/aws4_request'
       ]
     end
 
-    def self.date_string
+    def date_string
       @date_string ||= Date.today.strftime("%Y%m%d")
     end
   end
