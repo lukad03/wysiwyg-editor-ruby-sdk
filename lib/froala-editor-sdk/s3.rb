@@ -35,9 +35,6 @@ module FroalaEditorSDK
               {bucket: options[:bucket]},                   # Bucket name
               {acl: options[:acl]},                         # ACL property
               {success_action_status: "201"}                # Response status 201 'file created'
-              {"x-amz-algorithm": "AWS4-HMAC-SHA256"},
-              {"x-amz-credential": credential(options)},
-              {"x-amz-date": date_string},
           ]
       }
     end
@@ -53,26 +50,12 @@ module FroalaEditorSDK
         :region =>  options[:region] != 'us-east-1' ? "s3-#{options[:region]}" : 's3', # Upload region
         :keyStart => options[:keyStart],       # Start key/folder
         :params => {
-          acl: options[:acl],
-          policy: self.policy(options),
-          "x-amz-algorithm": "AWS4-HMAC-SHA256",
-          "x-amz-credential": credential(options),
-          "x-amz-date": date_string,
-          "x-amz-signature": self.signature(options)       
+          :signature => self.signature(options), # Defined signature
+          :AWSAccessKeyId => options[:accessKey],     # Your Access key
+          :policy => self.policy(options),       # Defined policy
+          :acl => options[:acl]                 # ACL property 'public-read'
         }
       }
-    end
-
-    private
-
-    def credential(options = nil)
-      [
-        options[:accessKey], date_string, options[:region], 's3/aws4_request'
-      ]
-    end
-
-    def date_string
-      @date_string ||= Date.today.strftime("%Y%m%d")
     end
   end
 end
