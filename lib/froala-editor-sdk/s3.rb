@@ -34,10 +34,10 @@ module FroalaEditorSDK
               ["starts-with", "$content-type", ""],         # Content type
               {bucket: options[:bucket]},                   # Bucket name
               {acl: options[:acl]},                         # ACL property
-              {success_action_status: "201"},               # Response status 201 'file created'
+              {success_action_status: "201"}                # Response status 201 'file created'
               {"x-amz-algorithm": "AWS4-HMAC-SHA256"},
               {"x-amz-credential": credential(options)},
-              {"x-amz-date": date_string}
+              {"x-amz-date": date_string},
           ]
       }
     end
